@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const { Readable } = require('stream');
 const axios = require('axios');
 
-const CAMERAS_LIST_TO_READ = ["sala","patio", "terraza", "aromaticas"];
+const CAMERAS_LIST_TO_READ = ["sala","patio", "terraza", "aromaticas", "parqueadero"];
 const LABELS_TO_FOLLOW = ["person", "car", "cat", "dog"];
 
 
@@ -85,7 +85,10 @@ mqttClient.on('message', async (topic, message) => {
             ACL: 'public-read',
         };
         const uploadResult = await s3.upload(params).promise();
-        console.log(`Image uploaded successfully. Location: ${uploadResult.Location}\nCamera: ${camera}, Event ID: ${id}, Label: ${label}
+        console.log(`
+        Camera: ${camera}, Event ID: ${id}, Label: ${label}
+        Location: ${uploadResult.Location}
+        Image uploaded successfully. 
         `);
     } catch (error) {
         console.error(`Error processing message or uploading to S3::`, error.message);
